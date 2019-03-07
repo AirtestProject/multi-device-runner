@@ -1,0 +1,26 @@
+{
+    "start": 1551947452.203223,
+    "script": "test_blackjack.air",
+    "tests": {
+        "AAQKYTY9MVRGOFIV": {
+            "status": 0,
+            "path": "test_blackjack.air\\log\\AAQKYTY9MVRGOFIV\\log.html"
+        },
+        "122.112.254.112:4555": {
+            "status": 0,
+            "path": "test_blackjack.air\\log\\122_112_254_112_4555\\log.html"
+        },
+        "122.112.254.112:4557": {
+            "status": 0,
+            "path": "test_blackjack.air\\log\\122_112_254_112_4557\\log.html"
+        },
+        "122.112.254.112:4559": {
+            "status": 4294967295,
+            "path": "test_blackjack.air\\log\\122_112_254_112_4559\\log.html"
+        },
+        "122.112.254.112:4561": {
+            "status": 0,
+            "path": "test_blackjack.air\\log\\122_112_254_112_4561\\log.html"
+        }
+    }
+}

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/png" href="http://airtest.netease.com/static/img/icon/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <title>Airtest 多设备并行测试结果汇总</title>
+  </head>
+  <style type="text/css">
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    body{
+      background: #eeeeee
+    }
+    .container {
+      width: 75%;
+      min-width: 800px;
+      margin: auto
+    }
+    body.zh .en{
+      display: none;
+    }
+    body.en .zh{
+      display: none;
+    }
+    h1{
+      margin-top: 50px;
+      text-align: center;
+    }
+    .center{
+      text-align: center;
+      margin-top: 15px;
+      margin-bottom: 30px;
+      font-size: 14px;
+      position: relative;
+    }
+    .btn{
+      border: solid 1px #c0c0c0;
+      padding: 5px 20px;
+      border-radius: 3px;
+      background: white;
+      cursor: context-menu;
+    }
+    .btn.lang:hover {
+      background: #5cb85c26;
+      border-color: #0a790a;
+    }
+    .btn.lang {
+      position: absolute;
+      top: 0;
+    }
+    .head {
+      margin: 20px 0 30px 0;
+    }
+    .head, .table{
+      background: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+      padding: 30px 20px;
+
+    }
+    .head .progress{
+      background: #dddddd;
+      color: white;
+      border-radius: 5px;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .head .progress-bar-success{
+      width: 0;
+      transition: all 0.5s ease;
+      background: #5cb85c;
+      border-radius: 5px;
+    }
+    .table-title {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      position: relative;
+    }
+    .table-row{
+      border: solid 1px #e5e5e5;
+      margin-top: -1px;
+      cursor: context-menu;
+    }
+    .table-row:hover, .table-row.active{
+      background: beige;
+    }
+    .table-head{
+      background: aliceblue;
+    }
+    .table-head:hover{
+      background: aliceblue;
+    }
+    .table-head .table-col{
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .table-col{
+      display: inline-block;
+      width: 200px;
+      line-height: 30px;
+      padding: 5px 10px;
+      border-left: solid 1px #e5e5e5;
+      margin-top: -1px;
+      margin-right: -5px;
+    }
+    .table-col.short{
+      width: 100px;
+      text-align: center;
+    }
+    .table-col:first-child{
+      border: none;
+    }
+    .table-col.long{
+      width: calc(100% - 500px);
+    }
+    .table-col.success{
+      color: green;
+    }
+    .table-col.failed{
+      color: red;
+    }
+    .detail{
+      text-align: center;
+      font-size: 14px;
+      color: gray;
+    }
+    .iframe{
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 70%;
+      min-width: 800px;
+      height: 100%;
+      box-shadow: 0 5px 10px grey;
+      transition: right 0.5s ease;
+      background: white;
+      max-width: 1100px;
+    }
+    .iframe-tools{
+      position: absolute;
+      top: 23px;
+      left: -34px;
+      background: white;
+      box-shadow: -2px 2px 5px grey;
+      border-radius: 7px;
+    }
+    .iframe-tools .close, .iframe-tools .open{
+      width: 32px;
+      height: 50px;
+      color: gray;
+      cursor: context-menu;
+      display: block;
+    }
+    .iframe.show{
+      right: 0;
+    }
+    iframe{
+      width: 100%;
+      height: calc(100% - 70px);
+      border: none;
+    }
+    .iframe-head {
+      height: 60px;
+      line-height: 70px;
+      text-align: center;
+      border-bottom: solid 1px #ddd;
+      box-shadow: 2px 0 6px #999;
+      margin-bottom: 10px;
+  }
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      background-color: rgba(0,0,0,.34);
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #8b8b8b;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #f5f5f5;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.22);
+    }
+    .iframe .close {
+      background: url('data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgEAYAAAAj6qa3AAAABGdBTUEAALGPC/xhBQAAAAFzUkdC AK9OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE AAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAAA6JJREFUaN7tmc9LG0EUx99sE+xB/wBJ vQhCPLTojAr+Af6iKJSSVhD0EhNC1HgWxIt/gBA0MaQXqQoV2gb/Ag+Krs4KHlSMN38EFRGkIupm Xw/reEgIu9lsNi34vQTcie99P/NmZt8E4FWvKkpt6bZ0W/rdu0rnYVdektmBNEETNPHlS3Ytu5Zd Oz6mC3SBLgwMVNo4o4wy2tmp1qv1av3REVthK2xldNS2ANRN3dT99SvVqEa1pyfGGGMMkcpUprKq VgqEME436SbdvL8XebEAC7CAppkFQYyMwwM8wMP376SVtJJWlyt3HMYwhrFsFg7hEA6HhpRBZVAZ XFwst3GcwzmcS6VImIRJ+O3b/IHAgCFCB3RARyTCfdzHfdGoIQCxlkSpQwxiEKuqMkoMt3Ebt1UV kpCE5MCAElACSuDHD7uMN280bzRvdHcTiUhE+vWroPHcvJ4nCBuxERvfv9+t2a3ZrTk4EM/z9gC5 QW6QG05PyR7ZI3uitJ+ejAK9VEgTNEHT0pJdS0PMeLHGRQWQEAmR0OhorvGXvI3+T8tYy1jL2OfP uI7ruL68rP/V7TZL3urSMF3qBYwDBw48HOacc85jsULDDQE4DcIp40UDKDcIp41bBmA3CDJDZsjM 1ZXTxksG8JIHZZRRnw93cAd3lpYKHZd5IMSpIYMMsqqaNh6EIAQ1DeqgDuoCAd7De3jPt29W8y8Z gJDVijAtm2Y8V2/syu9863zrfOvgwOPz+Dy+/X04gRM4+fTpOYz1OGUybjsA20GU2biQ6WaoWGnV WrVW/ecPzuIszmazxX4f/ehHv6ZhBCMYub0tV5627QFCdIJO0ImuLuiDPuj7/dv05lYIRJl7DdsA 2G3cKRAlA7DapIjjTJR60cenTU2X5T1AzLjVJgXmYR7mR0akcWlcGu/v1x8633QVXQGWS91gV69U 02UaQLmM58ppEIYAnDJeKRCFr8QqZNxpEAWvxNRr9Vq9TqeLblLiEId4MMgVrnAlmbRqPI9riU0X 3uEd3n34kHszlPdqehY9i55Fb29re2t7a3svL4mXeIn340d9Rkl+xYgZX4VVWB0Z0Y0nEnYZF8pk MplMZn/fc+O58dyYf8UmLuIirqkppV1pV9p//sx7bhSYpmiKpoaHyQW5IBfxuH58SZJT7+qFZLg0 QhCC0OQk93M/909PlxxQgBC/B+j38KGQU4aNQOj5PD7qn5OTZQuoB/B6K238f8nrVf+6/gLOvYPg ZwC/JwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wMy0wNlQyMDozMTo1NCswODowMMqAOUgAAAAl dEVYdGRhdGU6bW9kaWZ5ADIwMTktMDMtMDZUMjA6MzE6NTQrMDg6MDC73YH0AAAASHRFWHRzdmc6 YmFzZS11cmkAZmlsZTovLy9ob21lL2FkbWluL2ljb24tZm9udC90bXAvaWNvbl9jOHk0dXZzNXd0 Zy9DbG9zZS5zdmfc199nAAAAAElFTkSuQmCC') no-repeat;
+      background-size: 20px;
+      background-position: center;
+      border-bottom: solid 2px #e5e5e5;
+    }
+    .iframe .open {
+      background: url("data:img/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgEAYAAAAj6qa3AAAABGdBTUEAALGPC/xhBQAAAAFzUkdC AK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dE AAAAAAAA+UO7fwAAAAlwSFlzAAAASAAAAEgARslrPgAABS5JREFUaN7tmGtIU28cx3+/s0tFGyEW SLfJ0F4Yk3YttNUY5prBoMsha1EUQoUZESW9KIXKYWiZQhR7UfYiRgmZkBaGLCuTaucsR6RiVxLp It1cLJjn/P4vxurf3785by3Rz5uxZ8/vec73s+fsec4Appjir0Qn08l0so0bDdcN1w3X1erxmoeJ d9DBwGqsxup586iYiqnY69WWa8u15SrVpBHwKwsXMipGxahu3TKyRtbIJiVNMgEAUAqlUJqaKr4Q X4gvGhuN3cZuY3di4uQR8AsajaAUlIKyoSEzMTMxM1GpnGQCANCKVrSaTCF3yB1y37yZXpZell42 c+akEfBDhAtd6MrIkG6Xbpdur61NqUqpSqmaNm3CCdDe197X3k9J0ev0Or2OZUkggYSsrJhF2NCG tlWrZvXO6p3V6/GspJW0kqTSoeqG7DDWGBIMCYaEzExSk5rUTicchINw0G6HAiiAguRkQEBAAKzE SqwcwQT1UA/1a9cGpUFpUFpdHWncujXyKooDxI1XUJZlWZaVSF6GXoZehjZvph20g3YcOgQlUAIl aWl/QjYAANRADdS43ZyaU3PqXbsijUTjJkC3RbdFt8VsBic4wXn2LB7Gw3h48eI/FngQyEY2slVU 8C7exbv27x8zAZF7Viaj1bSaVp84gb3Yi7379gEHHHA4bitsdBw7xnEcx3FFRSO+QI1Go9FoEhLk drldbq+rgyZogiazOd7RYoVUpCJVYeGwd4Eld5bcWXJnzhy5XC6Xy5ubJ1rwKLgMl+Gy5OSYBaRd SbuSdkWhYD4xn5hP9fWRVo0m3kFGxsWLXCFXyBUWFMQsYPrS6UunLz1zBo/iUTxqNMY7wrBZA2tg TW2twqfwKXx5eZFGURzyHGDYa9hr2Lt+Pa2jdbQuup9ONBobv8z+MvvL7E2bOOSQw/7+6CeSwUpM XaYuU9f8+aIgCqJw4wY8gAfwYMaMeEcZHl6v7JrsmuyawxHIDmQHsr9//2+PQVdAv7xf3i8vKcEq rMKqhIRRX4se9KAnimyPb95AGZRBWVcX8cQT//o1etCDnmCQLtAFuhAKQRIkQZJGg3a0oz0nJ+Z5 jsNxON7aGuoL9YX6HA5uAbeAWxAKDdZ9gIDIc/aiRUKP0CP0OJ3DzUnN1EzNT55AMRRDcUMDetGL 3qamcGo4NZza0hJwB9wB97dvYAUrWP9ngHRIh3QA/SX9Jf2l6IFlaAF0m27Tbb9fUAgKQZGT8xSf 4lMMBoeqGyBAPC+eF88XFWEd1mGdRPL78nCYrtJVuurxkItc5Dp3zq/wK/yK1tYBXXnggR+uzhgw gxnM7e2iX/SLfputbUXbirYVnz/HWv5DgDZDm6HNmDs3cqLLzY0IGKwsug0eOMCreBWv6ugYh2i/ h4CAnj8XH4oPxYdZWY9PPz79+PSHD8Md5ocAJp/JZ/Jzc2E37Ibd//rm8yEf8oNB2kk7aWdeHh/m w3z48uU/Hjiau5zKqby7W7AIFsGSldWGbdiGPT0jHe/nOeAUnIJTP+95ukt36W5np8iKrMiaTHEP XkEVVPHuHXOPucfciwZ/9Wq04zLRH73IW50usrQ6OiTbJNsk2ywWv9Kv9Cvb2+MWvJIqqfLjR9gA G2BDdrbviO+I70hn51iNLxUcgkNwWCy4HJfj8mfPoAVaoMVqfVTzqOZRzdu38QoOJ+EknPz6lelj +pg+u9333vfe9z4QGPN59KX6Un2p2x15rP3bzvbM+P9lp9uj26PbY7WOfqQpppiI/AOjmiKrfUvK NAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOS0wMy0wNlQyMDozMTo1NCswODowMMqAOUgAAAAldEVY dGRhdGU6bW9kaWZ5ADIwMTktMDMtMDZUMjA6MzE6NTQrMDg6MDC73YH0AAAASHRFWHRzdmc6YmFz ZS11cmkAZmlsZTovLy9ob21lL2FkbWluL2ljb24tZm9udC90bXAvaWNvbl9jOHk0dXZzNXd0Zy9z aGFyZS5zdmftz7m3AAAAAElFTkSuQmCC") no-repeat;
+      background-size: 20px;
+      background-position: center;
+    }
+  </style>
+  <body class="zh">
+  <div class="container-fluid" >
+    <div class="container">
+      <div class="main">
+        <div class="material">
+          <h1>{{data['script']}}</h1>
+          <div class="center">
+            <div class="btn lang">Switch to English version</div>
+            <div class="time zh">开始时间：{{data['start']}}，耗时 <b>{{data['time']}}</b> 秒</div>
+            <div class="time en">Started at：{{data['start']}}，cost <b>{{data['time']}}</b> s</div>
+          </div>
+          <div class="head">
+            <header class="zh"><span class="rate"></span>成功率：</span> {{data["success"]}}/{{data["count"]}}</header>
+            <header class="en"><span class="rate">Ruccess rate：</span> {{data["success"]}}/{{data["count"]}}</header>
+            <div>
+              <div class="progress">
+                <div class="progress-bar progress-bar-success" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: {{data['success'] *100 / data['count']}}%">
+                  <span class="">{{'%0.2f' % (data["success"] *100 / data["count"])}}%</span>
+                </div>
+              </div>
+          </div>
+        </div>  
+
+        <div class="table">
+          <div class="table-title">
+            <span class="running_detail zh">运行详情</span>
+            <span class="running_detail en">Detail</span>
+          </div>
+          <div class="table-content">
+            <div class="table-row table-head">
+              <div class="table-col short zh">序号</div>
+              <div class="table-col short zh">状态</div>
+              <div class="table-col long zh">设备</div>
+              <div class="table-col short en">id</div>
+              <div class="table-col short en">result</div>
+              <div class="table-col long en">device</div>
+              <div class="table-col ">--</div>
+            </div>
+            {% for dev, item in data['tests'].items() %}
+              <div class="table-row" path="{{item['path']}}">
+                <div class="table-col short">{{loop.index}}</div>
+                <div class="table-col short zh {{'success' if item['status']==0 else 'failed'}}">{{"成功" if item['status']==0 else "失败"}}</div>
+                <div class="table-col short en {{'success' if item['status']==0 else 'failed'}}">{{"sucess" if item['status']==0 else "failed"}}</div>
+                <div class="table-col long">{{dev}}</div>
+                <div class="table-col detail zh">点击可查看详情</div>
+                <div class="table-col detail en">click to see detail</div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="iframe">
+      <div class="iframe-head"></div>
+      <iframe src='.'></iframe>
+      <div class="iframe-tools">
+          <div class="close"></div>
+          <a class="open" href='.' target='_blank'></a>
+      </div>
+    </div>
+  </div>
+  </body>
+  <script type="text/javascript">
+    var Lang = 'zh' // or en
+    var rows = document.querySelectorAll('.table-row')
+    var iframe = document.querySelector('.iframe')
+    var iframeHead = document.querySelector('.iframe-head')
+    var open = document.querySelector('.open')
+    var close = document.querySelector('.iframe .close')
+    var langBtn = document.querySelector('.lang')
+    var body = document.body
+    var prevActiveRow = null
+    function init() {
+      for(i=0; i<rows.length; i++){
+        addEvent(rows[i], 'click', function(e){
+          path = this.getAttribute('path')
+          console.log(this)
+          if(path) {
+            showIframe(this)
+          }
+        })
+      }
+      addEvent(close, 'click', function(e){
+        iframe.className='iframe'
+      })
+      addEvent(langBtn, 'click', function(e){
+        if(Lang == 'zh'){
+          Lang = 'en';
+          this.innerText = '切换到中文版'
+        } else {
+          Lang = 'zh'
+          this.innerText = "Switch to English version"
+        }
+        document.body.className = Lang
+        if (iframe.className.indexOf('show')>=0) {
+          showIframe(prevActiveRow)
+        }
+      })
+      document.body.className = Lang
+    }
+    function showIframe(obj){
+      var num = obj.querySelector('.table-col.short').innerText
+      var device = obj.querySelector('.table-col.long').innerText
+      if(Lang =='en') {
+        num = ordinal_suffix_of(num)
+        iframeHead.innerHTML = "Test report running in the " + num + ' device "' + device + '"'
+        open.setAttribute('title', 'open in a new tab')
+        close.setAttribute('title', 'close')
+      }
+      else {
+        iframeHead.innerHTML = "第 " + num + " 台设备 【" + device + "】 的测试报告"
+        open.setAttribute('title', '在新标签页打开')
+        close.setAttribute('title', '关闭')
+      }
+      iframe.querySelector('iframe').setAttribute('src', path)
+      open.setAttribute('href', path)
+      iframe.className='iframe show'
+      if(prevActiveRow){
+        prevActiveRow.className = "table-row"
+      }
+      obj.className = 'table-row active'
+      prevActiveRow = obj
+    }
+    function ordinal_suffix_of(i) {
+      i = Number(i)
+      var j = i % 10,
+        k = i % 100;
+      if (j == 1 && k != 11) {
+        return i + "st";
+      }
+      if (j == 2 && k != 12) {
+        return i + "nd";
+      }
+      if (j == 3 && k != 13) {
+        return i + "rd";
+      }
+      return i + "th";
+    }
+    function addEvent(obj,type,handle) {
+      try{// Chrome、FireFox、Opera、Safari、IE9.0 and above
+        obj.addEventListener(type,handle);
+      }catch(e){
+        try{// IE8.0 and below
+        obj.attachEvent('on'+ type,handle);
+        }catch(e){// Browser in earlier vesion
+          obj['on'+ type]= handle;
+        }
+      }
+    }
+    init()
+</script>
+</html>
+
+
+
