@@ -208,16 +208,16 @@
           <h1>test_blackjack.air</h1>
           <div class="center">
             <div class="btn lang">Switch to English version</div>
-            <div class="time zh">开始时间：2019-03-07 16:30:52，耗时 <b>30.258</b> 秒</div>
-            <div class="time en">Started at：2019-03-07 16:30:52，cost <b>30.258</b> s</div>
+            <div class="time zh">开始时间：2019-05-27 09:48:58，耗时 <b>23.739</b> 秒</div>
+            <div class="time en">Started at：2019-05-27 09:48:58，cost <b>23.739</b> s</div>
           </div>
           <div class="head">
-            <header class="zh"><span class="rate"></span>成功率：</span> 4/5</header>
-            <header class="en"><span class="rate">Ruccess rate：</span> 4/5</header>
+            <header class="zh"><span class="rate"></span>成功率：</span> 4/4</header>
+            <header class="en"><span class="rate">Ruccess rate：</span> 4/4</header>
             <div>
               <div class="progress">
-                <div class="progress-bar progress-bar-success" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: 80.0%">
-                  <span class="">80.00%</span>
+                <div class="progress-bar progress-bar-success" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: 100.0%">
+                  <span class="">100.00%</span>
                 </div>
               </div>
           </div>
@@ -238,43 +238,35 @@
               <div class="table-col long en">device</div>
               <div class="table-col ">--</div>
             </div>
-                          <div class="table-row" path="test_blackjack.air\log\AAQKYTY9MVRGOFIV\log.html">
+                          <div class="table-row" path="test_blackjack.air\log\52f0737\log.html">
                 <div class="table-col short">1</div>
                 <div class="table-col short zh success">成功</div>
                 <div class="table-col short en success">sucess</div>
-                <div class="table-col long">AAQKYTY9MVRGOFIV</div>
+                <div class="table-col long">52f0737</div>
                 <div class="table-col detail zh">点击可查看详情</div>
                 <div class="table-col detail en">click to see detail</div>
               </div>
-                          <div class="table-row" path="test_blackjack.air\log\122_112_254_112_4555\log.html">
+                          <div class="table-row" path="test_blackjack.air\log\721QEBRL2VGKL\log.html">
                 <div class="table-col short">2</div>
                 <div class="table-col short zh success">成功</div>
                 <div class="table-col short en success">sucess</div>
-                <div class="table-col long">122.112.254.112:4555</div>
+                <div class="table-col long">721QEBRL2VGKL</div>
                 <div class="table-col detail zh">点击可查看详情</div>
                 <div class="table-col detail en">click to see detail</div>
               </div>
-                          <div class="table-row" path="test_blackjack.air\log\122_112_254_112_4557\log.html">
+                          <div class="table-row" path="test_blackjack.air\log\9889db3057374c4544\log.html">
                 <div class="table-col short">3</div>
                 <div class="table-col short zh success">成功</div>
                 <div class="table-col short en success">sucess</div>
-                <div class="table-col long">122.112.254.112:4557</div>
+                <div class="table-col long">9889db3057374c4544</div>
                 <div class="table-col detail zh">点击可查看详情</div>
                 <div class="table-col detail en">click to see detail</div>
               </div>
-                          <div class="table-row" path="test_blackjack.air\log\122_112_254_112_4559\log.html">
+                          <div class="table-row" path="test_blackjack.air\log\AKC0218625007616\log.html">
                 <div class="table-col short">4</div>
-                <div class="table-col short zh failed">失败</div>
-                <div class="table-col short en failed">failed</div>
-                <div class="table-col long">122.112.254.112:4559</div>
-                <div class="table-col detail zh">点击可查看详情</div>
-                <div class="table-col detail en">click to see detail</div>
-              </div>
-                          <div class="table-row" path="test_blackjack.air\log\122_112_254_112_4561\log.html">
-                <div class="table-col short">5</div>
                 <div class="table-col short zh success">成功</div>
                 <div class="table-col short en success">sucess</div>
-                <div class="table-col long">122.112.254.112:4561</div>
+                <div class="table-col long">AKC0218625007616</div>
                 <div class="table-col detail zh">点击可查看详情</div>
                 <div class="table-col detail en">click to see detail</div>
               </div>
@@ -328,6 +320,7 @@
           showIframe(prevActiveRow)
         }
       })
+      document.body.className = Lang
     }
     function showIframe(obj){
       var num = obj.querySelector('.table-col.short').innerText
