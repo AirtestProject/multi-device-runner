@@ -82,7 +82,7 @@ def run_one_report(air, dev):
                 "--lang",
                 "zh"
             ]
-            ret = subprocess.call(cmd, shell=True, cwd=os.getcwd())
+            ret = subprocess.call(cmd, cwd=os.getcwd())
             return {
                     'status': ret,
                     'path': os.path.join(log_dir, 'log.html')
